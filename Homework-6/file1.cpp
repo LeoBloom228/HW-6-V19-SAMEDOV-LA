@@ -95,21 +95,66 @@
 
 //Task 2
 
+//#include <iostream>
+//#include <fstream>
+//#include <cmath>
+//
+//const double EPSILON = 1e-9; // comparison accuracy for real numbers
+//
+//bool isDivisible(double a, double b) 
+//{
+//    if (std::abs(b) < EPSILON) return false; // Divide by 0 protection
+//    return std::abs(std::fmod(a, b)) < EPSILON;
+//}
+//
+//int main() 
+//{
+//    std::ifstream fin("inputexc2.txt");
+//    if (!fin) 
+//    {
+//        std::cerr << "Error occurred when opening a file.\n";
+//        return 1;
+//    }
+//
+//    int n;
+//    fin >> n;
+//
+//    if (n < 2) 
+//    {
+//        std::cerr <<"Not enough data (n must be more than 2).\n";
+//        return 1;
+//    }
+//
+//    double* arr = new double[n];
+//    for (int i = 0; i < n; ++i) 
+//    {
+//        fin >> arr[i];
+//    }
+//
+//    int count = 0;
+//
+//    for (int i = 0; i < n - 1; ++i) 
+//    {
+//        if (isDivisible(arr[i], arr[i + 1])) 
+//        {
+//            ++count;
+//        }
+//    }
+//
+//    std::cout << "Number of pairs where the previous element is a multiple of the next: " << count << "\n";
+//
+//    delete[] arr;
+//    return 0;
+//}
+
+//Task 3
+
 #include <iostream>
 #include <fstream>
-#include <cmath>
-
-const double EPSILON = 1e-9; // comparison accuracy for real numbers
-
-bool isDivisible(double a, double b) 
-{
-    if (std::abs(b) < EPSILON) return false; // Divide by 0 protection
-    return std::abs(std::fmod(a, b)) < EPSILON;
-}
 
 int main() 
 {
-    std::ifstream fin("inputexc2.txt");
+    std::ifstream fin("inputexc3.txt");
     if (!fin) 
     {
         std::cerr << "Error occurred when opening a file.\n";
@@ -119,30 +164,51 @@ int main()
     int n;
     fin >> n;
 
-    if (n < 2) 
+    if (n <= 0) 
     {
-        std::cerr <<"Not enough data (n must be more than 2).\n";
+        std::cerr << "Incorrect array size.\n";
         return 1;
     }
 
-    double* arr = new double[n];
+    // Allocating memory for a two-dimensional array
+    int** arr = new int* [n];
     for (int i = 0; i < n; ++i) 
     {
-        fin >> arr[i];
+        arr[i] = new int[n];
     }
 
-    int count = 0;
+    // Reading an array
+    for (int i = 0; i < n; ++i)
+        for (int j = 0; j < n; ++j)
+            fin >> arr[i][j];
 
-    for (int i = 0; i < n - 1; ++i) 
+    // Processing: for each line need to find the maximum and change its sign
+    for (int i = 0; i < n; ++i) 
     {
-        if (isDivisible(arr[i], arr[i + 1])) 
+        int maxIndex = 0;
+        for (int j = 1; j < n; ++j) 
         {
-            ++count;
+            if (arr[i][j] > arr[i][maxIndex])
+                maxIndex = j;
         }
+        arr[i][maxIndex] = -arr[i][maxIndex]; // Replace with the opposite
     }
 
-    std::cout << "Number of pairs where the previous element is a multiple of the next: " << count << "\n";
+    
+    std::cout << "The result is:\n";
+    for (int i = 0; i < n; ++i) 
+    {
+        for (int j = 0; j < n; ++j) 
+        {
+            std::cout << arr[i][j] << " ";
+        }
+        std::cout << "\n";
+    }
 
+    // Clearing memory
+    for (int i = 0; i < n; ++i)
+        delete[] arr[i];
     delete[] arr;
+
     return 0;
 }
