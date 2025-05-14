@@ -215,66 +215,131 @@
 
 //Task 4
 
+//#include <iostream>
+//#include <fstream>
+//
+//int main() 
+//{
+//    std::ifstream fin("inputexc4.txt");
+//    if (!fin)
+//    {
+//        std::cerr << "An error ocurred when opening a file.\n";
+//        return 1;
+//    }
+//
+//    int n;
+//    fin >> n;
+//
+//    if (n <= 1)
+//    {
+//        std::cerr << "Error! The array size must be greater than 1.\n";
+//        return 1;
+//    }
+//
+//    // Allocating memory for a two-dimensional array
+//    int** arr = new int* [n];
+//    for (int i = 0; i < n; ++i)
+//        arr[i] = new int[n];
+//
+//    // Reading an array
+//    for (int i = 0; i < n; ++i)
+//        for (int j = 0; j < n; ++j)
+//            fin >> arr[i][j];
+//
+//    // New array to store results
+//    int* result = new int[n];
+//
+//    // Processing: for each row find the first pair of unequal neighbors
+//    for (int i = 0; i < n; ++i) 
+//    {
+//        result[i] = -1; 
+//        for (int j = 0; j < n - 1; ++j) 
+//        {
+//            if (arr[i][j] != arr[i][j + 1]) 
+//            {
+//                result[i] = j;
+//                break;
+//            }
+//        }
+//    }
+//
+//    
+//    std::cout << "Indices of the first unequal pairs in each row:\n";
+//    for (int i = 0; i < n; ++i)
+//        std::cout << result[i] << " ";
+//    std::cout << "\n";
+//
+//    // Clearing memory
+//    for (int i = 0; i < n; ++i)
+//        delete[] arr[i];
+//    delete[] arr;
+//    delete[] result;
+//
+//    return 0;
+//}
+
+//Task 5
 #include <iostream>
 #include <fstream>
 
 int main() 
 {
-    std::ifstream fin("inputexc4.txt");
-    if (!fin)
+    std::ifstream fin("inputexc5.txt");
+    if (!fin) 
     {
-        std::cerr << "An error ocurred when opening a file.\n";
+        std::cerr << "Error! Unable to open a file.\n";
         return 1;
     }
 
     int n;
     fin >> n;
 
-    if (n <= 1)
+    if (n <= 0) 
     {
-        std::cerr << "Error! The array size must be greater than 1.\n";
+        std::cerr << "Incorrect array size.\n";
         return 1;
     }
 
-    // Allocating memory for a two-dimensional array
-    int** arr = new int* [n];
-    for (int i = 0; i < n; ++i)
-        arr[i] = new int[n];
+    int* arr = new int[n];
 
-    // Reading an array
-    for (int i = 0; i < n; ++i)
-        for (int j = 0; j < n; ++j)
-            fin >> arr[i][j];
-
-    // New array to store results
-    int* result = new int[n];
-
-    // Processing: for each row find the first pair of unequal neighbors
+    // Reading the array
     for (int i = 0; i < n; ++i) 
     {
-        result[i] = -1; 
-        for (int j = 0; j < n - 1; ++j) 
+        if (!(fin >> arr[i])) 
         {
-            if (arr[i][j] != arr[i][j + 1]) 
-            {
-                result[i] = j;
-                break;
-            }
+            std::cerr << "Error reading array.\n";
+            delete[] arr;
+            return 1;
+        }
+    }
+
+    int d;
+    if (!(fin >> d) || d < 0 || d > 9) 
+    {
+        std::cerr << "Incorrect value of the digit to delete.\n";
+        delete[] arr;
+        return 1;
+    }
+
+    // Filtering: removing elements whose last digit is d
+    int new_size = 0;
+    for (int i = 0; i < n; ++i) 
+    {
+        int last_digit = std::abs(arr[i]) % 10;
+        if (last_digit != d) 
+        {
+            arr[new_size++] = arr[i];
         }
     }
 
     
-    std::cout << "Indices of the first unequal pairs in each row:\n";
-    for (int i = 0; i < n; ++i)
-        std::cout << result[i] << " ";
+    std::cout << "The result is:\n";
+    for (int i = 0; i < new_size; ++i)
+        std::cout << arr[i] << " ";
     std::cout << "\n";
 
-    // Clearing memory
-    for (int i = 0; i < n; ++i)
-        delete[] arr[i];
     delete[] arr;
-    delete[] result;
-
     return 0;
 }
+
 
