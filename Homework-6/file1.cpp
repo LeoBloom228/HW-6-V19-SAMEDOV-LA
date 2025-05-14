@@ -149,66 +149,132 @@
 
 //Task 3
 
+//#include <iostream>
+//#include <fstream>
+//
+//int main() 
+//{
+//    std::ifstream fin("inputexc3.txt");
+//    if (!fin) 
+//    {
+//        std::cerr << "Error occurred when opening a file.\n";
+//        return 1;
+//    }
+//
+//    int n;
+//    fin >> n;
+//
+//    if (n <= 0) 
+//    {
+//        std::cerr << "Incorrect array size.\n";
+//        return 1;
+//    }
+//
+//    // Allocating memory for a two-dimensional array
+//    int** arr = new int* [n];
+//    for (int i = 0; i < n; ++i) 
+//    {
+//        arr[i] = new int[n];
+//    }
+//
+//    // Reading an array
+//    for (int i = 0; i < n; ++i)
+//        for (int j = 0; j < n; ++j)
+//            fin >> arr[i][j];
+//
+//    // Processing: for each line need to find the maximum and change its sign
+//    for (int i = 0; i < n; ++i) 
+//    {
+//        int maxIndex = 0;
+//        for (int j = 1; j < n; ++j) 
+//        {
+//            if (arr[i][j] > arr[i][maxIndex])
+//                maxIndex = j;
+//        }
+//        arr[i][maxIndex] = -arr[i][maxIndex]; // Replace with the opposite
+//    }
+//
+//    
+//    std::cout << "The result is:\n";
+//    for (int i = 0; i < n; ++i) 
+//    {
+//        for (int j = 0; j < n; ++j) 
+//        {
+//            std::cout << arr[i][j] << " ";
+//        }
+//        std::cout << "\n";
+//    }
+//
+//    // Clearing memory
+//    for (int i = 0; i < n; ++i)
+//        delete[] arr[i];
+//    delete[] arr;
+//
+//    return 0;
+//}
+
+//Task 4
+
 #include <iostream>
 #include <fstream>
 
 int main() 
 {
-    std::ifstream fin("inputexc3.txt");
-    if (!fin) 
+    std::ifstream fin("inputexc4.txt");
+    if (!fin)
     {
-        std::cerr << "Error occurred when opening a file.\n";
+        std::cerr << "An error ocurred when opening a file.\n";
         return 1;
     }
 
     int n;
     fin >> n;
 
-    if (n <= 0) 
+    if (n <= 1)
     {
-        std::cerr << "Incorrect array size.\n";
+        std::cerr << "Error! The array size must be greater than 1.\n";
         return 1;
     }
 
     // Allocating memory for a two-dimensional array
     int** arr = new int* [n];
-    for (int i = 0; i < n; ++i) 
-    {
+    for (int i = 0; i < n; ++i)
         arr[i] = new int[n];
-    }
 
     // Reading an array
     for (int i = 0; i < n; ++i)
         for (int j = 0; j < n; ++j)
             fin >> arr[i][j];
 
-    // Processing: for each line need to find the maximum and change its sign
+    // New array to store results
+    int* result = new int[n];
+
+    // Processing: for each row find the first pair of unequal neighbors
     for (int i = 0; i < n; ++i) 
     {
-        int maxIndex = 0;
-        for (int j = 1; j < n; ++j) 
+        result[i] = -1; 
+        for (int j = 0; j < n - 1; ++j) 
         {
-            if (arr[i][j] > arr[i][maxIndex])
-                maxIndex = j;
+            if (arr[i][j] != arr[i][j + 1]) 
+            {
+                result[i] = j;
+                break;
+            }
         }
-        arr[i][maxIndex] = -arr[i][maxIndex]; // Replace with the opposite
     }
 
     
-    std::cout << "The result is:\n";
-    for (int i = 0; i < n; ++i) 
-    {
-        for (int j = 0; j < n; ++j) 
-        {
-            std::cout << arr[i][j] << " ";
-        }
-        std::cout << "\n";
-    }
+    std::cout << "Indices of the first unequal pairs in each row:\n";
+    for (int i = 0; i < n; ++i)
+        std::cout << result[i] << " ";
+    std::cout << "\n";
 
     // Clearing memory
     for (int i = 0; i < n; ++i)
         delete[] arr[i];
     delete[] arr;
+    delete[] result;
 
     return 0;
 }
+
