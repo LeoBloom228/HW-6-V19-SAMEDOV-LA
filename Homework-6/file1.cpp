@@ -279,67 +279,161 @@
 //}
 
 //Task 5
+//#include <iostream>
+//#include <fstream>
+//
+//int main() 
+//{
+//    std::ifstream fin("inputexc5.txt");
+//    if (!fin) 
+//    {
+//        std::cerr << "Error! Unable to open a file.\n";
+//        return 1;
+//    }
+//
+//    int n;
+//    fin >> n;
+//
+//    if (n <= 0) 
+//    {
+//        std::cerr << "Incorrect array size.\n";
+//        return 1;
+//    }
+//
+//    int* arr = new int[n];
+//
+//    // Reading the array
+//    for (int i = 0; i < n; ++i) 
+//    {
+//        if (!(fin >> arr[i])) 
+//        {
+//            std::cerr << "Error reading array.\n";
+//            delete[] arr;
+//            return 1;
+//        }
+//    }
+//
+//    int d;
+//    if (!(fin >> d) || d < 0 || d > 9) 
+//    {
+//        std::cerr << "Incorrect value of the digit to delete.\n";
+//        delete[] arr;
+//        return 1;
+//    }
+//
+//    // Filtering: removing elements whose last digit is d
+//    int new_size = 0;
+//    for (int i = 0; i < n; ++i) 
+//    {
+//        int last_digit = std::abs(arr[i]) % 10;
+//        if (last_digit != d) 
+//        {
+//            arr[new_size++] = arr[i];
+//        }
+//    }
+//
+//    
+//    std::cout << "The result is:\n";
+//    for (int i = 0; i < new_size; ++i)
+//        std::cout << arr[i] << " ";
+//    std::cout << "\n";
+//
+//    delete[] arr;
+//    return 0;
+//}
+
+//Task 6
+
 #include <iostream>
 #include <fstream>
 
 int main() 
 {
-    std::ifstream fin("inputexc5.txt");
+    std::ifstream fin("inputexc6.txt");
     if (!fin) 
     {
-        std::cerr << "Error! Unable to open a file.\n";
+        std::cerr << "Unable to open a file.\n";
         return 1;
     }
 
-    int n;
-    fin >> n;
+    int rows, cols;
+    fin >> rows >> cols;
 
-    if (n <= 0) 
+    if (rows <= 0 || cols <= 0) 
     {
-        std::cerr << "Incorrect array size.\n";
+        std::cerr << "Incorrect array dimensions.\n";
         return 1;
     }
 
-    int* arr = new int[n];
+    // Allocating memory for the original array
+    int** arr = new int* [rows];
+    for (int i = 0; i < rows; ++i)
+        arr[i] = new int[cols];
 
-    // Reading the array
-    for (int i = 0; i < n; ++i) 
+    // Reading an array
+    for (int i = 0; i < rows; ++i)
+        for (int j = 0; j < cols; ++j)
+            fin >> arr[i][j];
+
+    int target;
+    fin >> target;
+
+    // Determining which columns to insert new ones before
+    bool* insert_before = new bool[cols]();
+    int new_cols = cols;
+
+    for (int j = 0; j < cols; ++j) 
     {
-        if (!(fin >> arr[i])) 
+        for (int i = 0; i < rows; ++i) 
         {
-            std::cerr << "Error reading array.\n";
-            delete[] arr;
-            return 1;
+            if (arr[i][j] == target) 
+            {
+                insert_before[j] = true;
+                ++new_cols;
+                break;
+            }
         }
     }
 
-    int d;
-    if (!(fin >> d) || d < 0 || d > 9) 
-    {
-        std::cerr << "Incorrect value of the digit to delete.\n";
-        delete[] arr;
-        return 1;
-    }
+    // Allocating memory for a new array
+    int** new_arr = new int* [rows];
+    for (int i = 0; i < rows; ++i)
+        new_arr[i] = new int[new_cols];
 
-    // Filtering: removing elements whose last digit is d
-    int new_size = 0;
-    for (int i = 0; i < n; ++i) 
+    // Forming a new array
+    for (int i = 0; i < rows; ++i) 
     {
-        int last_digit = std::abs(arr[i]) % 10;
-        if (last_digit != d) 
+        int new_j = 0;
+        for (int j = 0; j < cols; ++j) 
         {
-            arr[new_size++] = arr[i];
+            if (insert_before[j]) 
+            {
+                new_arr[i][new_j++] = 0; 
+            }
+            new_arr[i][new_j++] = arr[i][j]; 
         }
     }
 
     
     std::cout << "The result is:\n";
-    for (int i = 0; i < new_size; ++i)
-        std::cout << arr[i] << " ";
-    std::cout << "\n";
+    for (int i = 0; i < rows; ++i) 
+    {
+        for (int j = 0; j < new_cols; ++j) 
+        {
+            std::cout << new_arr[i][j] << " ";
+        }
+        std::cout << "\n";
+    }
 
+    // Clearing memory
+    for (int i = 0; i < rows; ++i) 
+    {
+        delete[] arr[i];
+        delete[] new_arr[i];
+    }
     delete[] arr;
+    delete[] new_arr;
+    delete[] insert_before;
+
     return 0;
 }
-
-

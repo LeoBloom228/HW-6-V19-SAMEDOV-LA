@@ -135,6 +135,7 @@
     <Text Include="inputexc3.txt" />
     <Text Include="inputexc4.txt" />
     <Text Include="inputexc5.txt" />
+    <Text Include="inputexc6.txt" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
