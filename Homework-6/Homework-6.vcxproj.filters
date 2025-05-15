@@ -19,4 +19,24 @@
       <Filter>Исходные файлы</Filter>
     </ClCompile>
   </ItemGroup>
+  <ItemGroup>
+    <Text Include="inputexc1.txt">
+      <Filter>Исходные файлы</Filter>
+    </Text>
+    <Text Include="inputexc2.txt">
+      <Filter>Исходные файлы</Filter>
+    </Text>
+    <Text Include="inputexc3.txt">
+      <Filter>Исходные файлы</Filter>
+    </Text>
+    <Text Include="inputexc4.txt">
+      <Filter>Исходные файлы</Filter>
+    </Text>
+    <Text Include="inputexc5.txt">
+      <Filter>Исходные файлы</Filter>
+    </Text>
+    <Text Include="inputexc6.txt">
+      <Filter>Исходные файлы</Filter>
+    </Text>
+  </ItemGroup>
 </Project>
